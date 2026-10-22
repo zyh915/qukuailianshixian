@@ -32,6 +32,37 @@ try{
     console.log("- 计算的哈希值:", testHash);
     console.log("- 哈希长度:", testHash.length, "字符");
     console.log("\n√ 哈希计算正常\n");
+    // 5. 测试挖第一个区块，也是挖矿
+console.log("5. 测试挖第一个区块，也是挖矿: ");
+// console.time("挖矿耗时");
+blockchain.mine("第一个区块");
+// console.timeEnd("挖矿耗时结束");
+console.log("新区块的索引: ", blockchain.latestBlock.index);
+console.log("新区块的哈希值: ", blockchain.latestBlock.hash);
+console.log("新区块的挖矿数据: ", blockchain.latestBlock.data);
+console.log("新区块的nonce: ", blockchain.latestBlock.nonce);
+console.log("当前区块的长度:", blockchain.get().length);
+
+// 6. 测试显示完整的区块链
+console.log("6. 测试显示完整的区块链: ");
+blockchain.get().forEach((block, index) => {
+    console.log(`区块 #${index}`);
+    console.log(`  索引: ${block.index}`);
+    console.log(`  前一个哈希: ${block.previousHash}`);
+    console.log(`  时间戳: ${block.timestamp}`);
+    console.log(`  数据: ${block.data}`);
+    console.log(`  哈希值: ${block.hash}`);
+    console.log(`  nonce: ${block.nonce}`);
+    console.log("  时间: ", new Date(block.timestamp).toLocaleString("zh-CN"));
+    console.log(`------------------`);
+});
+
+// 7. 区块验证
+console.log("7. 区块验证: ");
+const block0 = blockchain.get()[0];
+const block1 = blockchain.get()[1];
+const isNextBlockValid = blockchain.isValidNextBlock(block1, block0);
+console.log(`新区块 ${block1.index} 是否有效: ${isNextBlockValid}`);
 }catch(err){
     console.log(err);
 }
